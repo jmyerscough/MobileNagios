@@ -1,0 +1,296 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		966BE4B01503CD3A00113FFA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 966BE4AF1503CD3A00113FFA /* UIKit.framework */; };
+		966BE4B21503CD3A00113FFA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 966BE4B11503CD3A00113FFA /* Foundation.framework */; };
+		966BE4B41503CD3A00113FFA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 966BE4B31503CD3A00113FFA /* CoreGraphics.framework */; };
+		966BE4BA1503CD3A00113FFA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 966BE4B81503CD3A00113FFA /* InfoPlist.strings */; };
+		966BE4BC1503CD3A00113FFA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 966BE4BB1503CD3A00113FFA /* main.m */; };
+		966BE4C01503CD3A00113FFA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 966BE4BF1503CD3A00113FFA /* AppDelegate.m */; };
+		966BE4C31503CD3A00113FFA /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 966BE4C11503CD3A00113FFA /* MainStoryboard_iPhone.storyboard */; };
+		966BE4C61503CD3A00113FFA /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 966BE4C41503CD3A00113FFA /* MainStoryboard_iPad.storyboard */; };
+		966BE4C91503CD3A00113FFA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 966BE4C81503CD3A00113FFA /* ViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		966BE4AB1503CD3A00113FFA /* MobileNagios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileNagios.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		966BE4AF1503CD3A00113FFA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		966BE4B11503CD3A00113FFA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		966BE4B31503CD3A00113FFA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		966BE4B71503CD3A00113FFA /* MobileNagios-Info.plist */ = {isa = PBXFileReference; path = "MobileNagios-Info.plist"; sourceTree = "<group>"; };
+		966BE4B91503CD3A00113FFA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		966BE4BB1503CD3A00113FFA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		966BE4BD1503CD3A00113FFA /* MobileNagios-Prefix.pch */ = {isa = PBXFileReference; path = "MobileNagios-Prefix.pch"; sourceTree = "<group>"; };
+		966BE4BE1503CD3A00113FFA /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		966BE4BF1503CD3A00113FFA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		966BE4C21503CD3A00113FFA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		966BE4C51503CD3A00113FFA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		966BE4C71503CD3A00113FFA /* ViewController.h */ = {isa = PBXFileReference; path = ViewController.h; sourceTree = "<group>"; };
+		966BE4C81503CD3A00113FFA /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		966BE4A81503CD3A00113FFA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				966BE4B01503CD3A00113FFA /* UIKit.framework in Frameworks */,
+				966BE4B21503CD3A00113FFA /* Foundation.framework in Frameworks */,
+				966BE4B41503CD3A00113FFA /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		966BE4A01503CD3A00113FFA = {
+			isa = PBXGroup;
+			children = (
+				966BE4B51503CD3A00113FFA /* MobileNagios */,
+				966BE4AE1503CD3A00113FFA /* Frameworks */,
+				966BE4AC1503CD3A00113FFA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		966BE4AC1503CD3A00113FFA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				966BE4AB1503CD3A00113FFA /* MobileNagios.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		966BE4AE1503CD3A00113FFA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				966BE4AF1503CD3A00113FFA /* UIKit.framework */,
+				966BE4B11503CD3A00113FFA /* Foundation.framework */,
+				966BE4B31503CD3A00113FFA /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		966BE4B51503CD3A00113FFA /* MobileNagios */ = {
+			isa = PBXGroup;
+			children = (
+				966BE4BE1503CD3A00113FFA /* AppDelegate.h */,
+				966BE4BF1503CD3A00113FFA /* AppDelegate.m */,
+				966BE4C11503CD3A00113FFA /* MainStoryboard_iPhone.storyboard */,
+				966BE4C41503CD3A00113FFA /* MainStoryboard_iPad.storyboard */,
+				966BE4C71503CD3A00113FFA /* ViewController.h */,
+				966BE4C81503CD3A00113FFA /* ViewController.m */,
+				966BE4B61503CD3A00113FFA /* Supporting Files */,
+			);
+			path = MobileNagios;
+			sourceTree = "<group>";
+		};
+		966BE4B61503CD3A00113FFA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				966BE4B71503CD3A00113FFA /* MobileNagios-Info.plist */,
+				966BE4B81503CD3A00113FFA /* InfoPlist.strings */,
+				966BE4BB1503CD3A00113FFA /* main.m */,
+				966BE4BD1503CD3A00113FFA /* MobileNagios-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		966BE4AA1503CD3A00113FFA /* MobileNagios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 966BE4CC1503CD3A00113FFA /* Build configuration list for PBXNativeTarget "MobileNagios" */;
+			buildPhases = (
+				966BE4A71503CD3A00113FFA /* Sources */,
+				966BE4A81503CD3A00113FFA /* Frameworks */,
+				966BE4A91503CD3A00113FFA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MobileNagios;
+			productName = MobileNagios;
+			productReference = 966BE4AB1503CD3A00113FFA /* MobileNagios.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		966BE4A21503CD3A00113FFA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = "Jason Myerscough";
+			};
+			buildConfigurationList = 966BE4A51503CD3A00113FFA /* Build configuration list for PBXProject "MobileNagios" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 966BE4A01503CD3A00113FFA;
+			productRefGroup = 966BE4AC1503CD3A00113FFA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				966BE4AA1503CD3A00113FFA /* MobileNagios */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		966BE4A91503CD3A00113FFA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				966BE4BA1503CD3A00113FFA /* InfoPlist.strings in Resources */,
+				966BE4C31503CD3A00113FFA /* MainStoryboard_iPhone.storyboard in Resources */,
+				966BE4C61503CD3A00113FFA /* MainStoryboard_iPad.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		966BE4A71503CD3A00113FFA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				966BE4BC1503CD3A00113FFA /* main.m in Sources */,
+				966BE4C01503CD3A00113FFA /* AppDelegate.m in Sources */,
+				966BE4C91503CD3A00113FFA /* ViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		966BE4B81503CD3A00113FFA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				966BE4B91503CD3A00113FFA /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		966BE4C11503CD3A00113FFA /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				966BE4C21503CD3A00113FFA /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		966BE4C41503CD3A00113FFA /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				966BE4C51503CD3A00113FFA /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		966BE4CA1503CD3A00113FFA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		966BE4CB1503CD3A00113FFA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		966BE4CD1503CD3A00113FFA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MobileNagios/MobileNagios-Prefix.pch";
+				INFOPLIST_FILE = "MobileNagios/MobileNagios-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		966BE4CE1503CD3A00113FFA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MobileNagios/MobileNagios-Prefix.pch";
+				INFOPLIST_FILE = "MobileNagios/MobileNagios-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		966BE4A51503CD3A00113FFA /* Build configuration list for PBXProject "MobileNagios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				966BE4CA1503CD3A00113FFA /* Debug */,
+				966BE4CB1503CD3A00113FFA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		966BE4CC1503CD3A00113FFA /* Build configuration list for PBXNativeTarget "MobileNagios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				966BE4CD1503CD3A00113FFA /* Debug */,
+				966BE4CE1503CD3A00113FFA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 966BE4A21503CD3A00113FFA /* Project object */;
+}
