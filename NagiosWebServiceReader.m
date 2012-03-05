@@ -8,11 +8,19 @@
 
 #import "NagiosWebServiceReader.h"
 
-@interface NagiosWebServiceReader () <NSURLConnectionDelegate>
+// Private class method & property declarations.
+@interface NagiosWebServiceReader () <NSURLConnectionDelegate, NSXMLParserDelegate>     // Delegate interfaces have been declared private because the 
+                                                                                        // public interface does not need to know these protocols are
+                                                                                        // implemented.
 
-@property (nonatomic, strong) NSMutableData *dataBuffer;
-@property (nonatomic) long expectedDataLength;
-@property (nonatomic) long remainingBytes;
+// Parses the status XML file and instantiates a collection of hosts
+// and services.
+- (void)parseStatusData:(NSData *)statusData;
+
+@property (nonatomic, strong) NSMutableData *dataBuffer;  // stores the data sent from the webserver.
+@property (nonatomic) long expectedDataLength;            // stores the length of data to be expected from the web server.
+
+@property (nonatomic) BOOL processingHost;
 @end
 
 @implementation NagiosWebServiceReader
@@ -21,7 +29,7 @@
 @synthesize lastError = _lastError;
 @synthesize dataBuffer = _dataBuffer;
 @synthesize expectedDataLength = _expectedDataLength;
-@synthesize remainingBytes = _remainingBytes;
+@synthesize processingHost = _processingHost;
 
 #pragma mark Public API
 
@@ -30,6 +38,7 @@
 {
     self = [self init];
     self.url = url;
+    self.processingHost = NO;
     return self;    
 }
 
@@ -74,8 +83,13 @@
 {
     NSLog(@"connectionDidFinishLoading called.");
     
+    NSString * s = [[NSString alloc] initWithData:self.dataBuffer encoding:NSUTF8StringEncoding];
+    
+    NSLog(@"%@", s);
+    
+    //if (self.expectedDataLength > 0)
     // the data needs to be processed now that it has been received from the server.
-    // xml parser
+        [self parseStatusData:[self.dataBuffer copy]];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -86,6 +100,58 @@
     // notification service.
     
     self.lastError = [error localizedDescription];
+}
+
+#pragma Private API
+
+- (void)parseStatusData:(NSData *)statusData
+{
+    BOOL success;
+    //NSXMLParser *statusXMLParser = [[NSXMLParser alloc] initWithData:statusData];
+    NSXMLParser *statusXMLParser = [[NSXMLParser alloc] initWithContentsOfURL:[[NSURL alloc] initWithString:@"http://192.168.44.130/status.php" ]];
+    
+    statusXMLParser.delegate = self;
+    success = [statusXMLParser parse];
+    
+    if (!success)
+    {
+        // notify caller of error
+        //NSError *error = [statusXMLParser parserError];
+        //NSLog(@"error=%@", error);
+    }
+}
+
+#pragma NSXMLParserDelegate
+
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI 
+ qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict
+{
+    if ([elementName isEqualToString:HOST_TAG_NAME])
+    {
+        self.processingHost = YES;
+        // TODO create an instance of NagiosHost
+        NSLog(@"Host node found");
+    }
+}
+
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
+{
+    if ([elementName isEqualToString:HOST_TAG_NAME])
+        self.processingHost = NO;
+}
+
+// read the data between the tags
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
+{
+    //NSLog(@"string=%@", string);
+}
+
+- (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
+{
+    NSString *s = [NSString stringWithFormat:@"Error %i, Description: %@, Line: %i, Column: %i", [parseError code],
+     [[parser parserError] localizedDescription], [parser lineNumber],
+     [parser columnNumber]];
+    NSLog(@"%@", s);    
 }
 
 @end
