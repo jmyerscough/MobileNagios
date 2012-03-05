@@ -25,24 +25,30 @@
 
 #pragma mark Public API
 
-- (void)retrieveTactialData
+
+- (id)initWithURL:(NSURL *)url
 {
-    // query the webserver
-    NSURLRequest *request = [NSURLRequest requestWithURL:self.url
+    self = [self init];
+    self.url = url;
+    return self;    
+}
+
+- (void)retrieveNagiosStatus
+{
+    NSURLRequest *request = [NSURLRequest requestWithURL:self.url 
                                              cachePolicy:NSURLRequestUseProtocolCachePolicy
                                          timeoutInterval:REQUEST_TIMEOUT];
-    
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request 
+                                                                  delegate:self];
     
     if (connection)
     {
-        // prepare the dataBuffer. Make sure it is correctly initialised.
         self.dataBuffer = [NSMutableData data];
         [self.dataBuffer setLength:0];
     }
     else
     {
-        // inform the user an error occurred.
+        //report an error to the end user.
     }
 }
 

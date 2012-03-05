@@ -12,7 +12,9 @@
 
 @interface NagiosWebServiceReader : NSObject
 
-- (void)retrieveTactialData;
+- (id)initWithURL:(NSURL *)url;
+
+- (void)retrieveNagiosStatus;
 
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, strong) NSString *lastError;
