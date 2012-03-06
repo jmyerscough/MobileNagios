@@ -19,9 +19,7 @@
 
 @property (nonatomic, strong) NSMutableData *dataBuffer;  // stores the data sent from the webserver.
 @property (nonatomic) long expectedDataLength;            // stores the length of data to be expected from the web server.
-
 @property (nonatomic) BOOL processingHost;
-
 @property (nonatomic, strong) NSURLRequest *request;
 
 @end
@@ -37,7 +35,6 @@
 
 #pragma mark Public API
 
-
 - (id)initWithURL:(NSURL *)url
 {
     self = [self init];
@@ -48,8 +45,7 @@
 
 - (void)retrieveNagiosStatus
 {
-    NSURL *url = [self smartURLForString:@"http://192.168.44.130/status"];
-    NSURLRequest * request = [NSURLRequest requestWithURL:url];
+    NSURLRequest * request = [NSURLRequest requestWithURL:self.url];
     
     NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
     
@@ -64,39 +60,6 @@
     }
 }
 
-- (NSURL *)smartURLForString:(NSString *)str
-{
-    NSURL *     result;
-    NSString *  trimmedStr;
-    NSRange     schemeMarkerRange;
-    NSString *  scheme;
-    
-    assert(str != nil);
-    
-    result = nil;
-    
-    trimmedStr = [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if ( (trimmedStr != nil) && (trimmedStr.length != 0) ) {
-        schemeMarkerRange = [trimmedStr rangeOfString:@"://"];
-        
-        if (schemeMarkerRange.location == NSNotFound) {
-            result = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", trimmedStr]];
-        } else {
-            scheme = [trimmedStr substringWithRange:NSMakeRange(0, schemeMarkerRange.location)];
-            assert(scheme != nil);
-            
-            if ( ([scheme compare:@"http"  options:NSCaseInsensitiveSearch] == NSOrderedSame)
-                || ([scheme compare:@"https" options:NSCaseInsensitiveSearch] == NSOrderedSame) ) {
-                result = [NSURL URLWithString:trimmedStr];
-            } else {
-                // It looks like this is some unsupported URL scheme.
-            }
-        }
-    }
-    
-    return result;
-}
-
 #pragma mark NSURLConnectionDelegate
 
 - (void)connection:(NSURLConnection *)theConnection didReceiveData:(NSData *)data
@@ -109,13 +72,12 @@
 
 - (void)connection:(NSURLConnection *)theConnection didReceiveResponse:(NSURLResponse *)response
 {
-//    self.expectedDataLength = [response expectedContentLength];
-//    [self.dataBuffer setLength:0];
-    
-    
+    self.expectedDataLength = [response expectedContentLength];
+    [self.dataBuffer setLength:0];
+        
     //NSHTTPURLResponse *r = (NSHTTPURLResponse*)response;
     
-//    NSLog(@"didReceiveResponse: expectedDataLength=%ld", self.expectedDataLength);
+    //NSLog(@"didReceiveResponse: expectedDataLength=%ld", self.expectedDataLength);
     //NSLog(@"statusCode=%d", [r statusCode]);
 }
 
@@ -127,9 +89,8 @@
     
     NSLog(@"%@", s);
     
-    //if (self.expectedDataLength > 0)
     // the data needs to be processed now that it has been received from the server.
-        [self parseStatusData:[self.dataBuffer copy]];
+    [self parseStatusData:[self.dataBuffer copy]];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -149,7 +110,6 @@
 {
     BOOL success;
     NSXMLParser *statusXMLParser = [[NSXMLParser alloc] initWithData:statusData];
-    //NSXMLParser *statusXMLParser = [[NSXMLParser alloc] initWithContentsOfURL:[[NSURL alloc] initWithString:@"http://192.168.44.130/status.php" ]];
     
     statusXMLParser.delegate = self;
     success = [statusXMLParser parse];
@@ -157,8 +117,8 @@
     if (!success)
     {
         // notify caller of error
-        //NSError *error = [statusXMLParser parserError];
-        //NSLog(@"error=%@", error);
+        NSError *error = [statusXMLParser parserError];
+        NSLog(@"error=%@", error);
     }
 }
      
