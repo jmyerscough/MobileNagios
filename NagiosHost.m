@@ -19,7 +19,7 @@
 @synthesize retryInterval = _retryInterval;
 @synthesize eventHandler = _eventHandler;
 @synthesize hasBeenChecked = _hasBeenChecked;
-@synthesize shouldBeChecked = _shouldBeChecked;
+@synthesize shouldBeScheduled = _shouldBeScheduled;
 @synthesize checkExecutionTime = _checkExecutionTime;
 @synthesize checkLatency = _checkLatency;
 @synthesize checkType = _checkType;
@@ -63,5 +63,10 @@
 @synthesize percentStateChange = _percentStateChange;
 @synthesize scheduledDowntimeDepth = _scheduledDowntimeDepth;
 @synthesize services = _services;
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"NagiosHost: hostname=%@", self.hostName];
+}
 
 @end

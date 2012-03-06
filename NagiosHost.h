@@ -21,7 +21,7 @@
 @property (nonatomic) float retryInterval;
 @property (nonatomic, strong) NSString * eventHandler;
 @property (nonatomic) BOOL hasBeenChecked;
-@property (nonatomic) BOOL shouldBeChecked;
+@property (nonatomic) BOOL shouldBeScheduled;
 @property (nonatomic) float checkExecutionTime;
 @property (nonatomic) float checkLatency;
 @property (nonatomic) NSInteger checkType;
