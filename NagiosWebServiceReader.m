@@ -9,7 +9,7 @@
 #import "NagiosWebServiceReader.h"
 
 // Private class method & property declarations.
-@interface NagiosWebServiceReader () <NSXMLParserDelegate>     // Delegate interfaces have been declared private because the 
+@interface NagiosWebServiceReader () <NSURLConnectionDelegate, NSXMLParserDelegate>     // Delegate interfaces have been declared private because the 
                                                                                         // public interface does not need to know these protocols are
                                                                                         // implemented.
 
