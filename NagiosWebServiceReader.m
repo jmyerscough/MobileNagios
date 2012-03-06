@@ -9,7 +9,7 @@
 #import "NagiosWebServiceReader.h"
 
 // Private class method & property declarations.
-@interface NagiosWebServiceReader () <NSURLConnectionDelegate, NSXMLParserDelegate>     // Delegate interfaces have been declared private because the 
+@interface NagiosWebServiceReader () <NSXMLParserDelegate>     // Delegate interfaces have been declared private because the 
                                                                                         // public interface does not need to know these protocols are
                                                                                         // implemented.
 
@@ -21,6 +21,9 @@
 @property (nonatomic) long expectedDataLength;            // stores the length of data to be expected from the web server.
 
 @property (nonatomic) BOOL processingHost;
+
+@property (nonatomic, strong) NSURLRequest *request;
+
 @end
 
 @implementation NagiosWebServiceReader
@@ -30,6 +33,7 @@
 @synthesize dataBuffer = _dataBuffer;
 @synthesize expectedDataLength = _expectedDataLength;
 @synthesize processingHost = _processingHost;
+@synthesize request = _request;
 
 #pragma mark Public API
 
@@ -44,11 +48,10 @@
 
 - (void)retrieveNagiosStatus
 {
-    NSURLRequest *request = [NSURLRequest requestWithURL:self.url 
-                                             cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                         timeoutInterval:REQUEST_TIMEOUT];
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request 
-                                                                  delegate:self];
+    NSURL *url = [self smartURLForString:@"http://192.168.44.130/status"];
+    NSURLRequest * request = [NSURLRequest requestWithURL:url];
+    
+    NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
     
     if (connection)
     {
@@ -61,9 +64,42 @@
     }
 }
 
+- (NSURL *)smartURLForString:(NSString *)str
+{
+    NSURL *     result;
+    NSString *  trimmedStr;
+    NSRange     schemeMarkerRange;
+    NSString *  scheme;
+    
+    assert(str != nil);
+    
+    result = nil;
+    
+    trimmedStr = [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if ( (trimmedStr != nil) && (trimmedStr.length != 0) ) {
+        schemeMarkerRange = [trimmedStr rangeOfString:@"://"];
+        
+        if (schemeMarkerRange.location == NSNotFound) {
+            result = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", trimmedStr]];
+        } else {
+            scheme = [trimmedStr substringWithRange:NSMakeRange(0, schemeMarkerRange.location)];
+            assert(scheme != nil);
+            
+            if ( ([scheme compare:@"http"  options:NSCaseInsensitiveSearch] == NSOrderedSame)
+                || ([scheme compare:@"https" options:NSCaseInsensitiveSearch] == NSOrderedSame) ) {
+                result = [NSURL URLWithString:trimmedStr];
+            } else {
+                // It looks like this is some unsupported URL scheme.
+            }
+        }
+    }
+    
+    return result;
+}
+
 #pragma mark NSURLConnectionDelegate
 
-- (void)connection:(NSURLConnection *) didReceiveData:(NSData *)data
+- (void)connection:(NSURLConnection *)theConnection didReceiveData:(NSData *)data
 {
     NSLog(@"didReceiveData=%@", data);
     
@@ -71,12 +107,16 @@
     [self.dataBuffer appendData:data];  
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+- (void)connection:(NSURLConnection *)theConnection didReceiveResponse:(NSURLResponse *)response
 {
-    self.expectedDataLength = [response expectedContentLength];
-    [self.dataBuffer setLength:0];
+//    self.expectedDataLength = [response expectedContentLength];
+//    [self.dataBuffer setLength:0];
     
-    NSLog(@"didReceiveResponse: expectedDataLength=%ld", self.expectedDataLength);
+    
+    //NSHTTPURLResponse *r = (NSHTTPURLResponse*)response;
+    
+//    NSLog(@"didReceiveResponse: expectedDataLength=%ld", self.expectedDataLength);
+    //NSLog(@"statusCode=%d", [r statusCode]);
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -102,13 +142,14 @@
     self.lastError = [error localizedDescription];
 }
 
+
 #pragma Private API
 
 - (void)parseStatusData:(NSData *)statusData
 {
     BOOL success;
-    //NSXMLParser *statusXMLParser = [[NSXMLParser alloc] initWithData:statusData];
-    NSXMLParser *statusXMLParser = [[NSXMLParser alloc] initWithContentsOfURL:[[NSURL alloc] initWithString:@"http://192.168.44.130/status.php" ]];
+    NSXMLParser *statusXMLParser = [[NSXMLParser alloc] initWithData:statusData];
+    //NSXMLParser *statusXMLParser = [[NSXMLParser alloc] initWithContentsOfURL:[[NSURL alloc] initWithString:@"http://192.168.44.130/status.php" ]];
     
     statusXMLParser.delegate = self;
     success = [statusXMLParser parse];
@@ -120,6 +161,8 @@
         //NSLog(@"error=%@", error);
     }
 }
+     
+
 
 #pragma NSXMLParserDelegate
 
