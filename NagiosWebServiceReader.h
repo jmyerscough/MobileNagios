@@ -19,6 +19,7 @@
 - (id)initWithURL:(NSURL *)url;
 
 - (void)retrieveNagiosStatus;
+- (NSDictionary *)getHosts;
 
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, strong) NSString *lastError;
