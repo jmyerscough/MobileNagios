@@ -10,7 +10,8 @@
 
 #define REQUEST_TIMEOUT 60.0    // request should time out after 60 seconds.
 
-#define HOST_TAG_NAME   @"host"
+#define HOST_TAG_NAME       @"host"
+#define SERVICE_TAG_NAME    @"service"
 
 // TODO store expected host tags in a map/dictionary
 

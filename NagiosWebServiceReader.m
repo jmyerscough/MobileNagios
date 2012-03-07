@@ -19,14 +19,17 @@
 - (void)initServiceTags; // initialises the dictionary that stores the service tags
 - (void)setCurrentHostTagValue:(NSString *)tagName withTagData:(NSString *)tagData; // sets one of the NagiosHost instance's properties depending
                                                                                     // on the value of tagName
+- (void)setCurrentServiceTagValue:(NSString *)tagName withTagData:(NSString *)tagData;
 
 @property (nonatomic, strong) NSMutableData *dataBuffer;            // stores the data sent from the webserver.
 @property (nonatomic) long expectedDataLength;                      // stores the length of data to be expected from the web server.
 @property (nonatomic) BOOL processingHost;                          // indicates whether a host entity is being processed.
+@property (nonatomic) BOOL processingService;
 @property (nonatomic, strong) NSURLRequest *request;                // represents the current HTTP request
 @property (nonatomic, strong) NSDictionary *hostTags;               // stores the hosts member tag names. 
 @property (nonatomic, strong) NSDictionary *serviceTags;            // stores the services member tag names.
 @property (nonatomic, strong) NagiosHost *currentHost;              // represents the current host being processed by the parser
+@property (nonatomic, strong) NagiosHostService *currentHostService;
 @property (nonatomic, strong) NSMutableString *currentTagData;      // stores the data between the current xml tag
 @property (nonatomic, strong) NSMutableDictionary *hostCollection;  // contains the collection of hosts.
 
@@ -39,10 +42,12 @@
 @synthesize dataBuffer = _dataBuffer;
 @synthesize expectedDataLength = _expectedDataLength;
 @synthesize processingHost = _processingHost;
+@synthesize processingService = _processingService;
 @synthesize request = _request;
 @synthesize hostTags = _hostTags;
 @synthesize serviceTags = _serviceTags;
 @synthesize currentHost = _currentHost;
+@synthesize currentHostService = _currentHostService;
 @synthesize currentTagData;
 @synthesize hostCollection = _hostCollection;
 
@@ -53,6 +58,7 @@
     self = [self init];
     self.url = url;
     self.processingHost = NO;
+    self.processingService = NO;
     return self;    
 }
 
@@ -145,7 +151,66 @@
 
 - (void)initServiceTags
 {
+    int idx = 0;
+    // the dictionary is used while parsing the data. The dictionary will ensure the
+    // parsing code is cleaner.
+    NSMutableDictionary *serviceTags = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       [NSNumber numberWithInt:idx++], @"host_name",
+                                       [NSNumber numberWithInt:idx++], @"service_description",
+                                       [NSNumber numberWithInt:idx++], @"modified_attributes",
+                                       [NSNumber numberWithInt:idx++], @"check_command",
+                                       [NSNumber numberWithInt:idx++], @"check_period",
+                                       [NSNumber numberWithInt:idx++], @"notification_period",
+                                       [NSNumber numberWithInt:idx++], @"check_interval",
+                                       [NSNumber numberWithInt:idx++], @"retry_interval",
+                                       [NSNumber numberWithInt:idx++], @"event_handler",
+                                       [NSNumber numberWithInt:idx++], @"has_been_checked",
+                                       [NSNumber numberWithInt:idx++], @"should_be_scheduled",
+                                       [NSNumber numberWithInt:idx++], @"check_execution_time",
+                                       [NSNumber numberWithInt:idx++], @"check_latency",
+                                       [NSNumber numberWithInt:idx++], @"check_type",
+                                       [NSNumber numberWithInt:idx++], @"current_state",
+                                       [NSNumber numberWithInt:idx++], @"last_hard_state",
+                                       [NSNumber numberWithInt:idx++], @"last_event_id",
+                                       [NSNumber numberWithInt:idx++], @"current_event_id",
+                                       [NSNumber numberWithInt:idx++], @"current_problem_id",
+                                       [NSNumber numberWithInt:idx++], @"last_problem_id",
+                                       [NSNumber numberWithInt:idx++], @"current_attempt",
+                                       [NSNumber numberWithInt:idx++], @"max_attempts",
+                                       [NSNumber numberWithInt:idx++], @"state_type",
+                                       [NSNumber numberWithInt:idx++], @"last_state_change",
+                                       [NSNumber numberWithInt:idx++], @"last_hard_state_change",
+                                       [NSNumber numberWithInt:idx++], @"last_time_ok",
+                                       [NSNumber numberWithInt:idx++], @"last_time_warning",
+                                       [NSNumber numberWithInt:idx++], @"last_time_unknown",
+                                       [NSNumber numberWithInt:idx++], @"last_time_critical",
+                                       [NSNumber numberWithInt:idx++], @"plugin_output",
+                                       [NSNumber numberWithInt:idx++], @"long_plugin_output",
+                                       [NSNumber numberWithInt:idx++], @"performance_data",
+                                       [NSNumber numberWithInt:idx++], @"last_check",
+                                       [NSNumber numberWithInt:idx++], @"next_check",
+                                       [NSNumber numberWithInt:idx++], @"check_options",
+                                       [NSNumber numberWithInt:idx++], @"current_notification_number",
+                                       [NSNumber numberWithInt:idx++], @"current_notification_id",
+                                       [NSNumber numberWithInt:idx++], @"last_notification",
+                                       [NSNumber numberWithInt:idx++], @"next_notification",
+                                       [NSNumber numberWithInt:idx++], @"no_more_notifications",
+                                       [NSNumber numberWithInt:idx++], @"notifications_enabled",
+                                       [NSNumber numberWithInt:idx++], @"active_checks_enabled",
+                                       [NSNumber numberWithInt:idx++], @"passive_checks_enabled",
+                                       [NSNumber numberWithInt:idx++], @"event_handler_enabled",
+                                       [NSNumber numberWithInt:idx++], @"problem_has_been_acknowledged",
+                                       [NSNumber numberWithInt:idx++], @"acknowledgement_type",
+                                       [NSNumber numberWithInt:idx++], @"flap_detection_enabled",
+                                       [NSNumber numberWithInt:idx++], @"failure_prediction_enabled",
+                                       [NSNumber numberWithInt:idx++], @"process_performance_data",
+                                       [NSNumber numberWithInt:idx++], @"obsess_over_service",
+                                       [NSNumber numberWithInt:idx++], @"last_update",
+                                       [NSNumber numberWithInt:idx++], @"is_flapping",
+                                       [NSNumber numberWithInt:idx++], @"percent_state_change",
+                                       [NSNumber numberWithInt:idx++], @"scheduled_downtime_depth", nil];
     
+    self.serviceTags = [serviceTags copy];
 }
 
 - (void)setCurrentHostTagValue:(NSString *)tagName withTagData:(NSString *)tagData
@@ -316,6 +381,121 @@
     }
 }
 
+- (void)setCurrentServiceTagValue:(NSString *)tagName withTagData:(NSString *)tagData
+{
+    NSNumber *currentServiceTagId = [self.serviceTags objectForKey:tagName];
+    
+    NSLog(@"currentId=%d", [currentServiceTagId integerValue]);
+    
+    switch ([currentServiceTagId integerValue])
+    {
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        case 8:
+            break;
+        case 9:
+            break;
+        case 10:
+            break;
+        case 11:
+            break;
+        case 12:
+            break;
+        case 13:
+            break;
+        case 14:
+            break;
+        case 15:
+            break;
+        case 16:
+            break;
+        case 17:
+            break;
+        case 18:
+            break;
+        case 19:
+            break;
+        case 20:
+            break;
+        case 21:
+            break;
+        case 22:
+            break;
+        case 23:
+            break;
+        case 24:
+            break;
+        case 25:
+            break;
+        case 26:
+            break;
+        case 27:
+            break;
+        case 28:
+            break;
+        case 29:
+            break;
+        case 30:
+            break;
+        case 31:
+            break;
+        case 32:
+            break;
+        case 33:
+            break;
+        case 34:
+            break;
+        case 35:
+            break;
+        case 36:
+            break;
+        case 37:
+            break;
+        case 38:
+            break;
+        case 39:
+            break;
+        case 40:
+            break;
+        case 41:
+            break;
+        case 42:
+            break;
+        case 43:
+            break;
+        case 44:
+            break;
+        case 45:
+            break;
+        case 46:
+            break;
+        case 47:
+            break;
+        case 48:
+            break;
+        case 49:
+            break;
+        case 50:
+            break;
+        case 51:
+            break;
+    }
+}
+
 #pragma mark NSURLConnectionDelegate
 
 - (void)connection:(NSURLConnection *)theConnection didReceiveData:(NSData *)data
@@ -365,6 +545,7 @@
     self.hostCollection = [[NSMutableDictionary alloc] init];
     
     [self initHostTags];
+    [self initServiceTags];
     
     statusXMLParser.delegate = self;
     success = [statusXMLParser parse];
@@ -388,6 +569,11 @@
     {
         self.processingHost = YES;
         self.currentHost = [[NagiosHost alloc] init];
+        self.currentHost.services = [[NSMutableArray alloc] init];
+    }
+    else if ([elementName isEqualToString:SERVICE_TAG_NAME])
+    {
+        self.processingService = YES;
     }
 }
 
@@ -403,8 +589,19 @@
     {
         [self setCurrentHostTagValue:elementName withTagData:[self.currentTagData copy]];
     }
-    
-    //self.currentTagData = nil; // reset the buffer. didStartElement will alloc memory again
+    else if ([elementName isEqualToString:SERVICE_TAG_NAME])
+    {
+        // need to add the service to the correct host.
+        NagiosHost *host = [self.hostCollection objectForKey:self.currentHostService.hostname];
+        
+        if (host)
+            [host.services addObject:self.currentHostService];
+        self.processingService = NO;
+    }
+    else if (self.processingService)
+    {
+        [self setCurrentServiceTagValue:elementName withTagData:[self.currentTagData copy]];
+    }
 }
 
 // read the data between the tags
