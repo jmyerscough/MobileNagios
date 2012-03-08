@@ -65,7 +65,7 @@
 @property (nonatomic) float percentStateChange;
 @property (nonatomic) NSInteger scheduledDowntimeDepth;
 
-@property (nonatomic, copy) NSMutableArray *services;
+@property (nonatomic, strong) NSMutableArray *services;
 
 @end
 
