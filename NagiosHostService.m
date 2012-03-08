@@ -40,6 +40,7 @@
 @synthesize lastTimeUnknown = _lastTimeUnknown;
 @synthesize lastTimeCritical = _lastTimeCritical;
 @synthesize pluginOutput = _pluginOutput;
+@synthesize longPluginOutput = _longPluginOutput;
 @synthesize performanceData = _performanceData;
 @synthesize lastCheck = _lastCheck;
 @synthesize nextCheck = _nextCheck;
@@ -62,6 +63,7 @@
 @synthesize isFlapping = _isFlapping;
 @synthesize percentStateChange = _percentStateChange;
 @synthesize scheduledDowntimeDepth = _scheduledDowntimeDepth;
+@synthesize failurePredictionEnabled = _failurePredictionEnabled;
 
 
 @end

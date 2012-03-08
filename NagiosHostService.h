@@ -40,6 +40,7 @@
 @property (nonatomic) long lastTimeUnknown;
 @property (nonatomic) long lastTimeCritical;
 @property (nonatomic, strong) NSString *pluginOutput;
+@property (nonatomic, strong) NSString *longPluginOutput;
 @property (nonatomic, strong) NSString *performanceData;
 @property (nonatomic) long lastCheck;
 @property (nonatomic) long nextCheck;
@@ -62,5 +63,6 @@
 @property (nonatomic) BOOL isFlapping;
 @property (nonatomic) float percentStateChange;
 @property (nonatomic) NSInteger scheduledDowntimeDepth;
+@property (nonatomic) BOOL failurePredictionEnabled;
 
 @end
