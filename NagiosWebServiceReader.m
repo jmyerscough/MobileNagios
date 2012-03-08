@@ -68,6 +68,8 @@
     
     NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
     
+    [connection start];
+    
     if (connection)
     {
         self.dataBuffer = [NSMutableData data];
@@ -81,7 +83,9 @@
 
 - (NSDictionary *)getHosts
 {
-    return [self.hostCollection copy];
+    NSLog(@"%@", self.hostCollection);
+    NSDictionary *hosts = [self.hostCollection copy];
+    return hosts;
 }
 
 
@@ -217,7 +221,7 @@
 {
     NSNumber *currentHostTagId = [self.hostTags objectForKey:tagName];
     
-    NSLog(@"currentId=%d", [currentHostTagId integerValue]);
+    //NSLog(@"currentId=%d", [currentHostTagId integerValue]);
     
     switch ([currentHostTagId integerValue])
     {
@@ -385,114 +389,171 @@
 {
     NSNumber *currentServiceTagId = [self.serviceTags objectForKey:tagName];
     
-    NSLog(@"currentId=%d", [currentServiceTagId integerValue]);
+    //NSLog(@"currentId=%d", [currentServiceTagId integerValue]);
     
     switch ([currentServiceTagId integerValue])
     {
         case 0:
+            self.currentHostService.hostname = self.currentTagData;
             break;
         case 1:
+            self.currentHostService.serviceDescription = self.currentTagData;
             break;
         case 2:
+            self.currentHostService.modifiedAttributes = [self.currentTagData integerValue];
             break;
         case 3:
+            self.currentHostService.checkCommand = self.currentTagData;
             break;
         case 4:
+            self.currentHostService.checkPeriod = self.currentTagData;
             break;
         case 5:
+            self.currentHostService.notificationPeriod = self.currentTagData;
             break;
         case 6:
+            self.currentHostService.checkInterval = [self.currentTagData floatValue];
             break;
         case 7:
+            self.currentHostService.retryInterval = [self.currentTagData floatValue];
             break;
         case 8:
+            self.currentHostService.eventHandler = self.currentTagData;
             break;
         case 9:
+            self.currentHostService.hasBeenChecked = [self.currentTagData boolValue];
             break;
         case 10:
+            self.currentHostService.shouldBeScheduled = [self.currentTagData boolValue];
             break;
         case 11:
+            self.currentHostService.checkExecutionTime = [self.currentTagData floatValue];
             break;
         case 12:
+            self.currentHostService.checkLatency = [self.currentTagData floatValue];
             break;
         case 13:
+            self.currentHostService.checkType = [self.currentTagData integerValue];
             break;
         case 14:
+            self.currentHostService.currentState = [self.currentTagData integerValue];
             break;
         case 15:
+            self.currentHostService.lastHardState = [self.currentTagData integerValue];
             break;
         case 16:
+            self.currentHostService.lastEventId = [self.currentTagData integerValue];
             break;
         case 17:
+            self.currentHostService.currentEventId = [self.currentTagData integerValue];
             break;
         case 18:
+            self.currentHostService.currentProblemId = [self.currentTagData integerValue];
             break;
         case 19:
+            self.currentHostService.lastProblemId = [self.currentTagData integerValue];
             break;
         case 20:
+            self.currentHostService.currentAttempt = [self.currentTagData integerValue];
             break;
         case 21:
+            self.currentHostService.maxAttempts = [self.currentTagData integerValue];
             break;
         case 22:
+            self.currentHostService.stateType = [self.currentTagData integerValue];
             break;
         case 23:
+            self.currentHostService.lastStateChange = [self.currentTagData longLongValue];
             break;
         case 24:
+            self.currentHostService.lastHardStateChange = [self.currentTagData longLongValue];
             break;
         case 25:
+            self.currentHostService.lastTimeOk = [self.currentTagData longLongValue];
             break;
         case 26:
+            self.currentHostService.lastTimeWarning = [self.currentTagData longLongValue];
             break;
         case 27:
+            self.currentHostService.lastTimeUnknown = [self.currentTagData longLongValue];
             break;
         case 28:
+            self.currentHostService.lastTimeCritical = [self.currentTagData longLongValue];
             break;
         case 29:
+            self.currentHostService.pluginOutput = self.currentTagData;
             break;
         case 30:
+            self.currentHostService.longPluginOutput = self.currentTagData;
             break;
         case 31:
+            self.currentHostService.performanceData = self.currentTagData;
             break;
         case 32:
+            self.currentHostService.lastCheck = [self.currentTagData longLongValue];
             break;
         case 33:
+            self.currentHostService.nextCheck = [self.currentTagData longLongValue];
             break;
         case 34:
+            self.currentHostService.checkOptions = [self.currentTagData integerValue];
             break;
         case 35:
+            self.currentHostService.currentNotificationNumber = [self.currentTagData integerValue];
             break;
         case 36:
+            self.currentHostService.currentNotificationId = [self.currentTagData integerValue];
             break;
         case 37:
+            self.currentHostService.lastNotification = [self.currentTagData integerValue];
             break;
         case 38:
+            self.currentHostService.nextNotification = [self.currentTagData integerValue];
             break;
         case 39:
+            self.currentHostService.noMoreNotifications = [self.currentTagData boolValue];
             break;
         case 40:
+            self.currentHostService.notificationsEnabled = [self.currentTagData boolValue];
             break;
         case 41:
+            self.currentHostService.activeChecksEnabled = [self.currentTagData boolValue];
             break;
         case 42:
+            self.currentHostService.passiveChecksEnabled = [self.currentTagData boolValue];
             break;
         case 43:
+            self.currentHostService.eventHandlerEnabled = [self.currentTagData boolValue];
             break;
         case 44:
+            self.currentHostService.problemHasBeenAcknowledged = [self.currentTagData boolValue];
             break;
         case 45:
+            self.currentHostService.acknowledgementType = [self.currentTagData integerValue];
             break;
         case 46:
+            self.currentHostService.flapPredictionEnabled = [self.currentTagData boolValue];
             break;
         case 47:
+            self.currentHostService.failurePredictionEnabled = [self.currentTagData boolValue];
             break;
         case 48:
+            self.currentHostService.processPerformanceData = [self.currentTagData boolValue];
             break;
         case 49:
+            self.currentHostService.obsessOverService = [self.currentTagData boolValue];
             break;
         case 50:
+            self.currentHostService.lastUpdate = [self.currentTagData longLongValue];
             break;
         case 51:
+            self.currentHostService.isFlapping = [self.currentTagData boolValue];
             break;
+        case 52:
+            self.currentHostService.percentStateChange = [self.currentTagData floatValue];
+            break;
+        case 53:
+            self.currentHostService.scheduledDowntimeDepth = [self.currentTagData integerValue];
     }
 }
 
@@ -573,6 +634,7 @@
     }
     else if ([elementName isEqualToString:SERVICE_TAG_NAME])
     {
+        self.currentHostService = [[NagiosHostService alloc] init];
         self.processingService = YES;
     }
 }
@@ -595,7 +657,11 @@
         NagiosHost *host = [self.hostCollection objectForKey:self.currentHostService.hostname];
         
         if (host)
-            [host.services addObject:self.currentHostService];
+        {
+            NSMutableArray * a = host.services;
+            [a addObject:self.currentHostService];
+            [self.hostCollection setObject:host forKey:host.hostName]; // update the dictionary
+        }
         self.processingService = NO;
     }
     else if (self.processingService)
