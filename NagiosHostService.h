@@ -10,6 +10,15 @@
 
 @interface NagiosHostService : NSObject
 
+typedef enum NagiosServiceState_t
+{
+    NagiosServicePending = 1,
+    NagiosServiceOk = 2,
+    NagiosServiceWarning = 4,
+    NagiosServiceUnknown = 8,
+    NagiosServiceCrticial = 16
+} NagiosServiceState;
+
 @property (nonatomic, strong) NSString *hostname;
 @property (nonatomic, strong) NSString *serviceDescription;
 @property (nonatomic) NSInteger modifiedAttributes;
@@ -24,7 +33,7 @@
 @property (nonatomic) float checkExecutionTime;
 @property (nonatomic) float checkLatency;
 @property (nonatomic) NSInteger checkType;
-@property (nonatomic) NSInteger currentState;
+@property (nonatomic) NagiosServiceState currentState;
 @property (nonatomic) NSInteger lastHardState;
 @property (nonatomic) NSInteger lastEventId;
 @property (nonatomic) NSInteger currentEventId;

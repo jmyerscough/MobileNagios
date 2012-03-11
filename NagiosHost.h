@@ -12,6 +12,14 @@
 // Used to store the contents of a host entity.
 @interface NagiosHost : NSObject
 
+typedef enum NagiosHostState_t
+{
+    NagiosHostPending = 1,
+    NagiosHostUp = 2,
+    NagiosHostDown = 4,
+    NagiosHostUnreachable = 8
+} NagiosHostState;
+
 @property (nonatomic, strong) NSString *hostName;
 @property (nonatomic) NSInteger modifiedAttributes;
 @property (nonatomic, strong) NSString * checkCommand;
@@ -25,7 +33,7 @@
 @property (nonatomic) float checkExecutionTime;
 @property (nonatomic) float checkLatency;
 @property (nonatomic) NSInteger checkType;
-@property (nonatomic) NSInteger currentState;
+@property (nonatomic) NagiosHostState currentState;
 @property (nonatomic) NSInteger lastHardState;
 @property (nonatomic) NSInteger lastEventId;
 @property (nonatomic) NSInteger currentEventId;
