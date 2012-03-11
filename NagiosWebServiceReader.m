@@ -81,13 +81,24 @@
     }
 }
 
-- (NSDictionary *)getHosts
+- (NSArray *)getHosts
 {
-    NSLog(@"%@", self.hostCollection);
-    NSDictionary *hosts = [self.hostCollection copy];
-    return hosts;
+    NSMutableArray *hostCollection = nil;
+    NSEnumerator *enumerator = [self.hostCollection keyEnumerator];
+    NSString *currentKey;
+    
+    while ((currentKey = [enumerator nextObject]))
+    {
+        if (!hostCollection)
+        {
+            hostCollection = [[NSMutableArray alloc] init];
+        }
+        NagiosHost *currentHost = [self.hostCollection objectForKey:currentKey];
+        if (currentHost)
+            [hostCollection addObject:currentHost];
+    }
+    return hostCollection;
 }
-
 
 #pragma mark Private API
 
@@ -220,6 +231,7 @@
 - (void)setCurrentHostTagValue:(NSString *)tagName withTagData:(NSString *)tagData
 {
     NSNumber *currentHostTagId = [self.hostTags objectForKey:tagName];
+    int currentState = 0;
     
     //NSLog(@"currentId=%d", [currentHostTagId integerValue]);
     
@@ -265,7 +277,19 @@
             self.currentHost.checkType = [self.currentTagData integerValue];
             break;
         case 13:
-            self.currentHost.currentState = [self.currentTagData integerValue];
+            currentState = [self.currentTagData intValue];
+            NagiosHostState state = NagiosHostPending;
+
+            switch (currentState)
+            {
+                case NagiosHostUp:
+                    state = NagiosHostUp; break;
+                case NagiosHostDown:
+                    state = NagiosHostDown; break;
+                case NagiosHostUnreachable:
+                    state = NagiosHostUnreachable; break;
+            }
+            self.currentHost.currentState = state;
             break;
         case 14:
             self.currentHost.lastHardState = [self.currentTagData integerValue];
@@ -388,6 +412,7 @@
 - (void)setCurrentServiceTagValue:(NSString *)tagName withTagData:(NSString *)tagData
 {
     NSNumber *currentServiceTagId = [self.serviceTags objectForKey:tagName];
+    int currentState = 0;
     
     //NSLog(@"currentId=%d", [currentServiceTagId integerValue]);
     
@@ -436,7 +461,21 @@
             self.currentHostService.checkType = [self.currentTagData integerValue];
             break;
         case 14:
-            self.currentHostService.currentState = [self.currentTagData integerValue];
+            currentState = [self.currentTagData intValue];
+            NagiosServiceState state = NagiosServiceUnknown;
+            
+            switch (currentState)
+            {
+            case NagiosServicePending:
+                state = NagiosServicePending; break;
+            case NagiosServiceOk:
+                state = NagiosServiceOk; break;
+            case NagiosServiceWarning:
+                state = NagiosServiceWarning; break;
+                case NagiosServiceCrticial:
+                    state = NagiosServiceCrticial;
+            }
+            self.currentHostService.currentState = state;
             break;
         case 15:
             self.currentHostService.lastHardState = [self.currentTagData integerValue];
