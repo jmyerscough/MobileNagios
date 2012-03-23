@@ -13,14 +13,13 @@
 #define HOST_TAG_NAME       @"host"
 #define SERVICE_TAG_NAME    @"service"
 
-// TODO store expected host tags in a map/dictionary
-
 @interface NagiosWebServiceReader : NSObject
 
 - (id)initWithURL:(NSURL *)url;
 
 - (void)retrieveNagiosStatus;
-- (NSDictionary *)getHosts;
+- (NSArray *)retrieveNagiosStatusAndBlock;
+- (NSArray *)getHosts;
 
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, strong) NSString *lastError;

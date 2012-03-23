@@ -100,6 +100,32 @@
     return hostCollection;
 }
 
+- (NSArray *)retrieveNagiosStatusAndBlock
+{
+    BOOL success;
+    NSXMLParser *statusXMLParser = [[NSXMLParser alloc] initWithContentsOfURL:self.url];
+    
+    if (!statusXMLParser)
+        return nil;
+    
+    
+    self.hostCollection = [[NSMutableDictionary alloc] init];
+    
+    [self initHostTags];
+    [self initServiceTags];
+    
+    statusXMLParser.delegate = self;
+    success = [statusXMLParser parse];
+    
+    if (!success)
+    {
+        // notify caller of error
+        NSError *error = [statusXMLParser parserError];
+        NSLog(@"error=%@", error);
+    }
+    return [self getHosts];
+}
+
 #pragma mark Private API
 
 - (void)initHostTags
