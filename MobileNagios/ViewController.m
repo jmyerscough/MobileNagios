@@ -51,19 +51,17 @@
 - (IBAction)buttonClicked 
 {
     // iterate the NSDictionary collection
-    NSDictionary *hosts = [self.nagiosService getHosts];
-    NSEnumerator *enumerator = [hosts keyEnumerator];
-    NSString *key;
+    NSArray *hosts = [self.nagiosService getHosts];
     
-    while ((key = [enumerator nextObject]))
+    for (int idx=0; idx < [hosts count]; idx++)
     {
-        NagiosHost *currentHost = [[self.nagiosService getHosts] objectForKey:key];
+        NagiosHost *currentHost = [hosts objectAtIndex:idx];
         
         NSLog(@"---------------");
         NSLog(@"currentHost: %@", currentHost.hostName);
-        for (int idx=0; idx < [currentHost.services count]; idx++)
+        for (int jdx=0; jdx < [currentHost.services count]; jdx++)
         {
-            NagiosHostService *service = [currentHost.services objectAtIndex:idx];
+            NagiosHostService *service = [currentHost.services objectAtIndex:jdx];
             NSLog(@"-- ServiceName: %@", service.serviceDescription);
         }
     }
