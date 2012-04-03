@@ -178,6 +178,7 @@
         {
             case NagiosHostDown: ++downCount; break;
             case NagiosHostUp: ++okCount; break;
+            case NagiosHostUnreachable: break;
         }
     }
     
@@ -217,18 +218,16 @@
             
             switch (service.currentState)
             {
-                case 0:
+                case NagiosServiceOk:
                     ++serviceok;
                     break;
-                case 1:
+                case NagiosServiceWarning:
                     break;
-                case 2:
+                case NagiosServiceCrticial:
                     break;
-                case 3:
+                case NagiosServicePending:
                     break;
-                case 4:
-                    break;
-                case 5:
+                case NagiosServiceUnknown:
                     break;
             }
         }
