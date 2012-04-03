@@ -57,6 +57,14 @@
     {
         _hostCollection = hostCollection;
         [self.tableView reloadData];    // reload the view everytime the data module is changed.
+        
+        // The tab view is essentially an array of view controllers.
+        // my idea is to add a setData method to each view controller
+        // and in this if statement, loop through all the view controllers
+        // and pass the hostCollection
+        //
+        // for (viewControllers)
+        //    [viewController setData:hostCollection];
     }
 }
 
@@ -134,17 +142,20 @@
         for (int idx=0; idx < [self.hostCollection count]; idx++)
         {
             NagiosHost *host = [self.hostCollection objectAtIndex:idx];
-            if (host.currentState == 1)
+            if (host.currentState == NagiosHostUp)
                 ++upHostCount;
         }
         
-        if (self.hostCollection)
+        NSLog(@"hostCollection.count=%d, upHostCount=%d", [self.hostCollection count], upHostCount);
+        if (self.hostCollection && upHostCount > 0)
         {
-            status = ([self.hostCollection count] / upHostCount) * 100;
+            status = ((float)upHostCount / [self.hostCollection count]) * 100.0;
         }
-        else {
+        else
+        {
             status = 0;
         }
+        
         cell.textLabel.text = @"Hosts";
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%.2f%\%", status];
     }
@@ -163,7 +174,11 @@
     {
         NagiosHost *host = [self.hostCollection objectAtIndex:idx];
         
-        if (host.currentState == 1) ++okCount;
+        switch (host.currentState)
+        {
+            case NagiosHostDown: ++downCount; break;
+            case NagiosHostUp: ++okCount; break;
+        }
     }
     
     switch (indexPath.row)
