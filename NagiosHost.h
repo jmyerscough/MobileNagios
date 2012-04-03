@@ -14,10 +14,10 @@
 
 typedef enum NagiosHostState_t
 {
-    NagiosHostPending = 1,
-    NagiosHostUp = 2,
-    NagiosHostDown = 4,
-    NagiosHostUnreachable = 8
+    NagiosHostPending     = 1,  // need to resolve this value
+    NagiosHostUp          = 0,
+    NagiosHostDown        = 1,
+    NagiosHostUnreachable = 8   // need to resolve this value
 } NagiosHostState;
 
 @property (nonatomic, strong) NSString *hostName;
