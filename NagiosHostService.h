@@ -12,10 +12,10 @@
 
 typedef enum NagiosServiceState_t
 {
-    NagiosServicePending = 1,
-    NagiosServiceOk = 2,
-    NagiosServiceWarning = 4,
-    NagiosServiceUnknown = 8,
+    NagiosServicePending  = 1,
+    NagiosServiceOk       = 2,
+    NagiosServiceWarning  = 4,
+    NagiosServiceUnknown  = 8,
     NagiosServiceCrticial = 16
 } NagiosServiceState;
 
