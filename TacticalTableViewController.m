@@ -13,6 +13,8 @@
 
 @interface TacticalTableViewController ()
 
+@property (nonatomic, strong) NagiosWebServiceReader *nagiosService;
+@property (nonatomic, strong) NSTimer *parserTimeout;
 @property (nonatomic, strong) NSArray *hostCollection;
 
 @end
@@ -46,10 +48,13 @@
 #define HOST_SUMMARY_HEADER             @"Hosts Summary"
 #define SERVICES_SUMMARY_HEADER         @"Service Summary"
 
+#define PARSER_TIMEOUT                      10.0
 
 @implementation TacticalTableViewController
 
+@synthesize nagiosService = _nagiosService;
 @synthesize hostCollection = _hostCollection;
+@synthesize parserTimeout = _parserTimeout;
 
 -(void) setHostCollection:(NSArray *)hostCollection
 {
@@ -68,19 +73,33 @@
     }
 }
 
+- (void)parserDidTimeout
+{
+    
+}
+
 #pragma mark Actions
 
 - (IBAction)refreshData:(UIBarButtonItem *)sender
 {
     NSLog(@"reload nagios data");
     
-    // TODO add error handling
+    // Start the timer, which will be used to abort the parser
+    self.parserTimeout = [NSTimer timerWithTimeInterval:PARSER_TIMEOUT 
+                                                 target:self
+                                               selector:@selector(parserDidTimeout)
+                                               userInfo:nil
+                                                repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:self.parserTimeout forMode:NSDefaultRunLoopMode];
     
-    // retrieve the data from the web server.
-    NagiosWebServiceReader *nagiosService = [[NagiosWebServiceReader alloc] initWithURL:
-                                             [[NSURL alloc] initWithString:@"http://192.168.0.11/status/"]];
-    self.hostCollection =  [nagiosService retrieveNagiosStatusAndBlock];
-    //nagiosService = nil;
+    self.nagiosService = [[NagiosWebServiceReader alloc] initWithURL:
+                                             [[NSURL alloc] initWithString:@"http://192.168.0.13/status/"]];
+    self.hostCollection =  [self.nagiosService retrieveNagiosStatusAndBlock];
+    
+    if (!self.hostCollection)
+    {
+        NSLog(@"Data could not be retrieved");
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -158,11 +177,13 @@
         
         cell.textLabel.text = @"Hosts";
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%.2f%\%", status];
+        cell.imageView.image = [UIImage imageNamed:@"mycomputer.png"];
     }
     else
     {
         cell.textLabel.text = @"Services";
         cell.detailTextLabel.text = @"100%";    // TODO implement service information
+        cell.imageView.image = [UIImage imageNamed:@"misc.png"];
     }
 }
 
@@ -187,18 +208,22 @@
         case HOST_OK_INDEX:
             cell.textLabel.text = @"UP";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", okCount];
+            cell.imageView.image = [UIImage imageNamed:@"ledgreen.png"];
             break;
         case HOST_DOWN_INDEX:
             cell.textLabel.text = @"Down";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", downCount];
+            cell.imageView.image = [UIImage imageNamed:@"ledred.png"];
             break;
         case HOST_PENDING_INDEX:
             cell.textLabel.text = @"Pending";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", pendingCount];
+            cell.imageView.image = [UIImage imageNamed:@"ledyellow.png"];
             break;
         case HOST_UNREACHABLE_INDEX:
             cell.textLabel.text = @"Unreachable";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", unreachableCount];
+            cell.imageView.image = [UIImage imageNamed:@"help.png"];
             break;                    
         default:
             break;
@@ -238,22 +263,27 @@
         case SERVICE_OK:
             cell.textLabel.text = @"OK";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", serviceok];
+            cell.imageView.image = [UIImage imageNamed:@"ledgreen.png"];
             break;
         case SERVICE_CRITICAL:
             cell.textLabel.text = @"Critical";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", serviceCritical];
+            cell.imageView.image = [UIImage imageNamed:@"ledred.png"];
             break;
         case SERVICE_WARNING:
             cell.textLabel.text = @"Warning";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", serviceWarning];
+            cell.imageView.image = [UIImage imageNamed:@"ledyellow.png"];
             break;
         case SERVICE_PENDING:
             cell.textLabel.text = @"Pending";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", servicePending];
+            cell.imageView.image = [UIImage imageNamed:@"help.png"];
             break;
         case SERVICE_UNKNOWN:
             cell.textLabel.text = @"Unknown";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", serviceUnknown];
+            cell.imageView.image = [UIImage imageNamed:@"help.png"];
             break;
         default:
             break;
