@@ -10,6 +10,7 @@
 #import "NagiosWebServiceReader.h"
 #import "NagiosHost.h"
 #import "NagiosHostService.h"
+#import "SettingsViewController.h"  // the nagios address key is declared here
 
 @interface TacticalTableViewController ()
 
@@ -92,13 +93,23 @@
                                                 repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:self.parserTimeout forMode:NSDefaultRunLoopMode];
     
-    self.nagiosService = [[NagiosWebServiceReader alloc] initWithURL:
-                                             [[NSURL alloc] initWithString:@"http://192.168.0.13/status/"]];
-    self.hostCollection =  [self.nagiosService retrieveNagiosStatusAndBlock];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    if (!self.hostCollection)
+    if ([defaults objectForKey:NAGIOS_ADDRESS_KEY])
     {
-        NSLog(@"Data could not be retrieved");
+        // retrieve the data from the web server.
+        self.nagiosService = [[NagiosWebServiceReader alloc] initWithURL:
+                                                 [[NSURL alloc] initWithString:[defaults objectForKey:NAGIOS_ADDRESS_KEY]]];
+        self.hostCollection =  [self.nagiosService retrieveNagiosStatusAndBlock];
+    }
+    else
+    {
+        UIAlertView *errorMessage = [[UIAlertView alloc] initWithTitle:@"No valid server address"
+                                                               message:@"Please check the application settings and enter the webserver's URL" 
+                                                              delegate:nil
+                                                     cancelButtonTitle:@"OK"
+                                                     otherButtonTitles:nil];
+        [errorMessage show];
     }
 }
 
