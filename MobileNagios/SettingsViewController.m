@@ -19,10 +19,12 @@
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     
-    // write the address information to user default settings file.
-    [defaults setObject:[self.nagiosServerAddress text] forKey:NAGIOS_ADDRESS_KEY];
-    [defaults synchronize];    
-    
+    if ([self.nagiosServerAddress text] != nil)
+    {
+        // write the address information to user default settings file.
+        [defaults setObject:[self.nagiosServerAddress text] forKey:NAGIOS_ADDRESS_KEY];
+        [defaults synchronize];    // synchronise the user default database
+    }
     // make the keyboard disappear.
     [self.nagiosServerAddress resignFirstResponder];
 }
