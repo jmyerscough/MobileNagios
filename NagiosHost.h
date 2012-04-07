@@ -14,7 +14,7 @@
 
 typedef enum NagiosHostState_t
 {
-    NagiosHostPending     = 1,  // need to resolve this value
+    NagiosHostPending     = 4,  // need to resolve this value
     NagiosHostUp          = 0,
     NagiosHostDown        = 1,
     NagiosHostUnreachable = 8   // need to resolve this value
