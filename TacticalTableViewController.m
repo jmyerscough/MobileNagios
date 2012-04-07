@@ -12,6 +12,7 @@
 #import "NagiosHostService.h"
 #import "SettingsViewController.h"  // the nagios address key is declared here
 #import "HostsViewController.h"
+#import "NagiosHostService.h"
 
 @interface TacticalTableViewController ()
 
@@ -129,9 +130,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //int serviceCount = 0;
-    //NagiosHost *currentHost = nil;
-    
     switch (section)
     {
         case NETWORK_HEALTH_SECTION: return 2;
@@ -146,7 +144,6 @@
     static NSString *CellIdentifier = @"Tactical Table Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
-    // TODO refactor code. Create methods for each section.
     switch (indexPath.section)
     {
         case NETWORK_HEALTH_SECTION:
@@ -159,8 +156,6 @@
             [self prepareTableCellForService:cell atIndex:indexPath];                                
             break;
     }
-    
-    
     return cell;
 }
 
@@ -195,8 +190,32 @@
     }
     else
     {
+        float serviceStatus = 0;
+        int totalServiceCount = 0;
+        int serviceOkCount = 0;
+        
+        for (int idx=0; idx < [self.hostCollection count]; idx++)
+        {
+            NagiosHost *host = [self.hostCollection objectAtIndex:idx];
+            
+            totalServiceCount += [host.services count];
+            
+            for (int j=0; j < [host.services count]; j++)
+            {
+                NagiosHostService *service = [host.services objectAtIndex:j];
+                
+                if (service.currentState == NagiosServiceOk)
+                    ++serviceOkCount;
+            }
+        }
+        
+        if (serviceOkCount > 0)
+        {
+            serviceStatus = ((float)serviceOkCount / totalServiceCount) * 100.0;
+        }
+        
         cell.textLabel.text = @"Services";
-        cell.detailTextLabel.text = @"100%";    // TODO implement service information
+        cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"%.2f", serviceStatus];
         cell.imageView.image = [UIImage imageNamed:@"misc.png"];
     }
 }
@@ -262,12 +281,16 @@
                     ++serviceok;
                     break;
                 case NagiosServiceWarning:
+                    ++serviceWarning;
                     break;
                 case NagiosServiceCrticial:
+                    ++serviceCritical;
                     break;
                 case NagiosServicePending:
+                    ++servicePending;
                     break;
                 case NagiosServiceUnknown:
+                    ++serviceUnknown;
                     break;
             }
         }
@@ -305,7 +328,6 @@
     }
 }
 
-
 // Sets the sections header
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
@@ -320,19 +342,6 @@
         default:
             return nil;
     }
-}
-
-#pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
 }
 
 @end
