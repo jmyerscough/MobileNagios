@@ -15,6 +15,13 @@
 @implementation SettingsViewController
 @synthesize nagiosServerAddress;
 
+- (void)viewDidLoad
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults objectForKey:NAGIOS_ADDRESS_KEY])
+        self.nagiosServerAddress.text = [defaults objectForKey:NAGIOS_ADDRESS_KEY];
+}
+
 - (IBAction)addressDoneEditing:(id)sender
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
