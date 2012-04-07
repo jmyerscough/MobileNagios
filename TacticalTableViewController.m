@@ -11,6 +11,7 @@
 #import "NagiosHost.h"
 #import "NagiosHostService.h"
 #import "SettingsViewController.h"  // the nagios address key is declared here
+#import "HostsViewController.h"
 
 @interface TacticalTableViewController ()
 
@@ -40,8 +41,8 @@
 
 #define SERVICE_OK                          0
 #define SERVICE_WARNING                     1
-#define SERVICE_PENDING                     2
-#define SERVICE_CRITICAL                    3
+#define SERVICE_PENDING                     3
+#define SERVICE_CRITICAL                    2
 #define SERVICE_UNKNOWN                     4
 
 // table view headers
@@ -50,6 +51,8 @@
 #define SERVICES_SUMMARY_HEADER         @"Service Summary"
 
 #define PARSER_TIMEOUT                      10.0
+
+#define HOST_TAB_INDEX                      1
 
 @implementation TacticalTableViewController
 
@@ -63,14 +66,13 @@
     {
         _hostCollection = hostCollection;
         [self.tableView reloadData];    // reload the view everytime the data module is changed.
-        
-        // The tab view is essentially an array of view controllers.
-        // my idea is to add a setData method to each view controller
-        // and in this if statement, loop through all the view controllers
-        // and pass the hostCollection
-        //
-        // for (viewControllers)
-        //    [viewController setData:hostCollection];
+
+        // pass the host information to the host view controller The host view controller is embedded in
+        // an Navigation controller.
+        UINavigationController *navigstionVC = [[self.tabBarController viewControllers] objectAtIndex:HOST_TAB_INDEX];
+        HostsViewController * hostVC = [[navigstionVC viewControllers] objectAtIndex:0];
+        NSLog(@"%@", hostVC);
+        [hostVC setHostCollection:self.hostCollection];
     }
 }
 
@@ -188,7 +190,8 @@
         
         cell.textLabel.text = @"Hosts";
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%.2f%\%", status];
-        cell.imageView.image = [UIImage imageNamed:@"mycomputer.png"];
+        //cell.imageView.image = [UIImage imageNamed:@"mycomputer.png"];
+        cell.imageView.image = [UIImage imageNamed:@"host.png"];
     }
     else
     {
@@ -211,6 +214,7 @@
             case NagiosHostDown: ++downCount; break;
             case NagiosHostUp: ++okCount; break;
             case NagiosHostUnreachable: break;
+            case NagiosHostPending: break;
         }
     }
     
@@ -219,22 +223,22 @@
         case HOST_OK_INDEX:
             cell.textLabel.text = @"UP";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", okCount];
-            cell.imageView.image = [UIImage imageNamed:@"ledgreen.png"];
+            cell.imageView.image = [UIImage imageNamed:@"System-Security-Firewall-ON-icon.png"];
             break;
         case HOST_DOWN_INDEX:
             cell.textLabel.text = @"Down";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", downCount];
-            cell.imageView.image = [UIImage imageNamed:@"ledred.png"];
+            cell.imageView.image = [UIImage imageNamed:@"System-Security-Firewall-OFF-icon.png"];
             break;
         case HOST_PENDING_INDEX:
             cell.textLabel.text = @"Pending";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", pendingCount];
-            cell.imageView.image = [UIImage imageNamed:@"ledyellow.png"];
+            cell.imageView.image = [UIImage imageNamed:@"System-Security-Question-icon.png"];
             break;
         case HOST_UNREACHABLE_INDEX:
             cell.textLabel.text = @"Unreachable";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", unreachableCount];
-            cell.imageView.image = [UIImage imageNamed:@"help.png"];
+            cell.imageView.image = [UIImage imageNamed:@"System-Security-Warning-icon.png.png"];
             break;                    
         default:
             break;
@@ -274,27 +278,27 @@
         case SERVICE_OK:
             cell.textLabel.text = @"OK";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", serviceok];
-            cell.imageView.image = [UIImage imageNamed:@"ledgreen.png"];
+            cell.imageView.image = [UIImage imageNamed:@"System-Security-Firewall-ON-icon.png"];
             break;
         case SERVICE_CRITICAL:
             cell.textLabel.text = @"Critical";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", serviceCritical];
-            cell.imageView.image = [UIImage imageNamed:@"ledred.png"];
+            cell.imageView.image = [UIImage imageNamed:@"System-Security-Firewall-OFF-icon.png"];
             break;
         case SERVICE_WARNING:
             cell.textLabel.text = @"Warning";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", serviceWarning];
-            cell.imageView.image = [UIImage imageNamed:@"ledyellow.png"];
+            cell.imageView.image = [UIImage imageNamed:@"System-Security-Warning-icon.png"];
             break;
         case SERVICE_PENDING:
             cell.textLabel.text = @"Pending";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", servicePending];
-            cell.imageView.image = [UIImage imageNamed:@"help.png"];
+            cell.imageView.image = [UIImage imageNamed:@"System-Security-Question-icon.png"];
             break;
         case SERVICE_UNKNOWN:
             cell.textLabel.text = @"Unknown";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", serviceUnknown];
-            cell.imageView.image = [UIImage imageNamed:@"help.png"];
+            cell.imageView.image = [UIImage imageNamed:@"System-Security-Question-icon.png"];
             break;
         default:
             break;
