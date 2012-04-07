@@ -32,6 +32,7 @@
 @property (nonatomic, strong) NagiosHostService *currentHostService;
 @property (nonatomic, strong) NSMutableString *currentTagData;      // stores the data between the current xml tag
 @property (nonatomic, strong) NSMutableDictionary *hostCollection;  // contains the collection of hosts.
+@property (nonatomic, strong) NSXMLParser *statusXMLParser;
 
 @end
 
@@ -50,6 +51,7 @@
 @synthesize currentHostService = _currentHostService;
 @synthesize currentTagData;
 @synthesize hostCollection = _hostCollection;
+@synthesize statusXMLParser = _statusXMLParser;
 
 #pragma mark Public API
 
@@ -103,9 +105,9 @@
 - (NSArray *)retrieveNagiosStatusAndBlock
 {
     BOOL success;
-    NSXMLParser *statusXMLParser = [[NSXMLParser alloc] initWithContentsOfURL:self.url];
+    self.statusXMLParser = [[NSXMLParser alloc] initWithContentsOfURL:self.url];
     
-    if (!statusXMLParser)
+    if (!self.statusXMLParser)
         return nil;
     
     
@@ -114,13 +116,13 @@
     [self initHostTags];
     [self initServiceTags];
     
-    statusXMLParser.delegate = self;
-    success = [statusXMLParser parse];
+    self.statusXMLParser.delegate = self;
+    success = [self.statusXMLParser parse];
     
     if (!success)
     {
         // notify caller of error
-        NSError *error = [statusXMLParser parserError];
+        NSError *error = [self.statusXMLParser parserError];
         NSLog(@"error=%@", error);
     }
     return [self getHosts];
