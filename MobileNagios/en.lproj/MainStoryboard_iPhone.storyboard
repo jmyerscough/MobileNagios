@@ -130,28 +130,48 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Hosts" id="XQu-3l-i4Q"/>
                     <connections>
-                        <segue destination="Qgs-cc-J4G" kind="push" identifier="Service Information Segue" id="IrR-L3-jGa"/>
+                        <segue destination="Qgs-cc-J4G" kind="push" identifier="Service Information" id="ccJ-27-uLk"/>
                     </connections>
                 </tableViewController>
             </objects>
             <point key="canvasLocation" x="983" y="140"/>
         </scene>
-        <!--Table View Controller - Services-->
+        <!--Services Table View Controller - Services-->
         <scene sceneID="KEW-hZ-2ew">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="715-J5-iOH" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController id="Qgs-cc-J4G" sceneMemberID="viewController">
+                <tableViewController id="Qgs-cc-J4G" customClass="ServicesTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="b97-0H-1X8">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Services Cell" id="5Mi-zt-wng">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Services Cell" textLabel="YlK-TD-eLa" detailTextLabel="2fs-GL-5ap" imageView="GIc-eC-aJP" style="IBUITableViewCellStyleSubtitle" id="5Mi-zt-wng">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YlK-TD-eLa">
+                                            <rect key="frame" x="47" y="2" width="38" height="22"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2fs-GL-5ap">
+                                            <rect key="frame" x="47" y="24" width="47" height="18"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="misc.png" id="GIc-eC-aJP">
+                                            <rect key="frame" x="5" y="5" width="32" height="32"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </imageView>
+                                    </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                             </tableViewCell>
@@ -264,12 +284,16 @@
         <image name="connections.png" width="26" height="26"/>
         <image name="first_aid.png" width="26" height="26"/>
         <image name="ledgreen.png" width="32" height="32"/>
+        <image name="misc.png" width="32" height="32"/>
         <image name="ok.png" width="32" height="32"/>
         <image name="preferences.png" width="26" height="26"/>
     </resources>
     <classes>
         <class className="HostsViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/HostsViewController.h"/>
+        </class>
+        <class className="ServicesTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ServicesTableViewController.h"/>
         </class>
         <class className="SettingsViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsViewController.h"/>
