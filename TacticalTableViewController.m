@@ -185,7 +185,6 @@
         
         cell.textLabel.text = @"Hosts";
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%.2f%\%", status];
-        //cell.imageView.image = [UIImage imageNamed:@"mycomputer.png"];
         cell.imageView.image = [UIImage imageNamed:@"host.png"];
     }
     else
@@ -215,7 +214,7 @@
         }
         
         cell.textLabel.text = @"Services";
-        cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"%.2f", serviceStatus];
+        cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"%.2f%\%", serviceStatus];
         cell.imageView.image = [UIImage imageNamed:@"misc.png"];
     }
 }
