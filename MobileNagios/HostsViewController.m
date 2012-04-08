@@ -8,6 +8,7 @@
 
 #import "HostsViewController.h"
 #import "NagiosHost.h"
+#import "ServicesTableViewController.h"
 
 @interface HostsViewController ()
 @property (nonatomic, strong) NSMutableArray *upHostsCollection;
@@ -114,6 +115,36 @@
         case HOST_UNREACHABLE_SECTION: return HOST_UNREACHABLE_HEADER;
         default: return @""; // should never reach here
     }
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(NSIndexPath *)sender
+{
+    NSLog(@"sender=%@", [sender description]);
+    NagiosHost *host = nil;
+    
+    if([segue.identifier isEqualToString:@"Service Information"])
+    {
+        switch (sender.section)
+        {
+            case HOST_OK_SECTION: host = [self.upHostsCollection objectAtIndex:sender.row]; break;
+            case HOST_DOWN_SECTION: host = [self.downHostsCollection objectAtIndex:sender.row]; break;
+            case HOST_PENDING_SECTION: host =[self.pendingHostsCollection objectAtIndex:sender.row]; break;
+            case HOST_UNREACHABLE_SECTION: host = [self.unreachableHostsCollection objectAtIndex:sender.row]; break;
+        }
+        [segue.destinationViewController setHostCollection:host.services];
+    }
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"didSelectRowAtIndexPath");
+    
+    // although the table cell should be the sender
+    // I have set the indexPath as the sender so I can access the
+    // section information in prepareForSegue.
+    [self performSegueWithIdentifier:@"Service Information" sender:indexPath];
 }
 
 @end
