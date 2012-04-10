@@ -68,6 +68,7 @@
             case NagiosServiceUnknown: [self.unknownServicesCollection addObject:service]; break;
         }
     }
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
