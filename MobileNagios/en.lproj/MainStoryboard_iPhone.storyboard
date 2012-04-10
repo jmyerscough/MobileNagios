@@ -81,7 +81,7 @@
                     </navigationItem>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="64" y="-394"/>
+            <point key="canvasLocation" x="64" y="-456"/>
         </scene>
         <!--Hosts View Controller - Hosts-->
         <scene sceneID="MNX-He-2G2">
@@ -134,7 +134,7 @@
                     </connections>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="983" y="140"/>
+            <point key="canvasLocation" x="517" y="140"/>
         </scene>
         <!--Services Table View Controller - Services-->
         <scene sceneID="KEW-hZ-2ew">
@@ -146,11 +146,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Services Cell" textLabel="YlK-TD-eLa" detailTextLabel="2fs-GL-5ap" imageView="GIc-eC-aJP" style="IBUITableViewCellStyleSubtitle" id="5Mi-zt-wng">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Services Cell" textLabel="YlK-TD-eLa" detailTextLabel="2fs-GL-5ap" imageView="GIc-eC-aJP" style="IBUITableViewCellStyleSubtitle" id="5Mi-zt-wng">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YlK-TD-eLa">
@@ -182,9 +182,59 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Services" id="DHP-2P-bkG"/>
+                    <connections>
+                        <segue destination="RSc-G7-aKh" kind="push" identifier="Service Details" id="861-jW-8wB"/>
+                    </connections>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="1579" y="140"/>
+            <point key="canvasLocation" x="984" y="63"/>
+        </scene>
+        <!--Service Detail View Controller-->
+        <scene sceneID="OUW-da-FTp">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yxt-Qs-cga" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController id="RSc-G7-aKh" customClass="ServiceDetailViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" sectionIndexMinimumDisplayRowCount="4" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="S1P-VM-1Wq">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="service Details" textLabel="NQK-dF-Zdk" detailTextLabel="qWV-q8-bhu" style="IBUITableViewCellStyleSubtitle" id="Yl6-oE-Aq6">
+                                <rect key="frame" x="0.0" y="46" width="320" height="46"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="10" y="1" width="300" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Status Information" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NQK-dF-Zdk">
+                                            <rect key="frame" x="10" y="2" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qWV-q8-bhu">
+                                            <rect key="frame" x="10" y="24" width="36" height="18"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="RSc-G7-aKh" id="Yii-S6-6NL"/>
+                            <outlet property="delegate" destination="RSc-G7-aKh" id="SqO-07-MWD"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="zhD-dI-jN1"/>
+                </tableViewController>
+            </objects>
+            <point key="canvasLocation" x="1443" y="140"/>
         </scene>
         <!--Navigation Controller - Hosts-->
         <scene sceneID="mIg-gU-Jak">
@@ -203,7 +253,7 @@
                     </connections>
                 </navigationController>
             </objects>
-            <point key="canvasLocation" x="457" y="140"/>
+            <point key="canvasLocation" x="64" y="140"/>
         </scene>
         <!--Navigation Controller - Tactical View-->
         <scene sceneID="9o3-TT-9GZ">
@@ -222,7 +272,7 @@
                     </connections>
                 </navigationController>
             </objects>
-            <point key="canvasLocation" x="-462" y="-394"/>
+            <point key="canvasLocation" x="-462" y="-456"/>
         </scene>
         <!--Navigation Controller - Settings-->
         <scene sceneID="ZoA-mG-Ihx">
@@ -241,7 +291,7 @@
                     </connections>
                 </navigationController>
             </objects>
-            <point key="canvasLocation" x="-70" y="743"/>
+            <point key="canvasLocation" x="-462" y="723"/>
         </scene>
         <!--Settings View Controller - Settings-->
         <scene sceneID="l2J-bY-YJO">
@@ -277,7 +327,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="452" y="743"/>
+            <point key="canvasLocation" x="64" y="723"/>
         </scene>
     </scenes>
     <resources>
@@ -291,6 +341,9 @@
     <classes>
         <class className="HostsViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/HostsViewController.h"/>
+        </class>
+        <class className="ServiceDetailViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ServiceDetailViewController.h"/>
         </class>
         <class className="ServicesTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ServicesTableViewController.h"/>
