@@ -62,6 +62,7 @@
             case NagiosHostUnreachable: [self.unreachableHostsCollection addObject:host]; break;
         }
     }
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
