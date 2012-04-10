@@ -8,6 +8,7 @@
 
 #import "ServicesTableViewController.h"
 #import "NagiosHostService.h"
+#import "ServiceDetailViewController.h"
 
 #define SERVICE_SECTION_COUNT          5
 
@@ -118,7 +119,7 @@
 {
     switch (section)
     {
-        case SERVICE_OK_SECTION : return SERVICE_OK_HEADER;
+        case SERVICE_OK_SECTION: return SERVICE_OK_HEADER;
         case SERVICE_DOWN_SECTION: return SERVICE_DOWN_HEADER;
         case SERVICE_CRITICAL_SECTION: return SERVICE_CRITICAL_HEADER;
         case SERVICE_PENDING_SECTION: return SERVICE_PENDING_HEADER;
@@ -127,11 +128,32 @@
     }
 }
 
-#pragma mark - Table view delegate
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(NSIndexPath *)sender
+{
+    NagiosHostService *service = nil;
+    
+    if([segue.identifier isEqualToString:@"Service Details"])
+    {
+        switch (sender.section)
+        {
+            case SERVICE_OK_SECTION : service = [self.okServicesCollection objectAtIndex:sender.row]; break;
+            case SERVICE_DOWN_SECTION: service = [self.warningServicesCollection objectAtIndex:sender.row]; break;
+            case SERVICE_CRITICAL_SECTION: service = [self.criticalServicesCollection objectAtIndex:sender.row]; break;
+            case SERVICE_PENDING_SECTION: service = [self.pendingServicesCollection objectAtIndex:sender.row]; break;
+            case SERVICE_UNKNOWN_SECTION: service = [self.unknownServicesCollection objectAtIndex:sender.row]; break;
+        }
+        [segue.destinationViewController setTitle:service.serviceDescription];
+        [segue.destinationViewController setCurrentService:service];
+    }
+}
+
+
+#pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO Segue to another view.
+    NSLog(@"didSelectRowAtIndexPath");
+    [self performSegueWithIdentifier:@"Service Details" sender:indexPath];
 }
 
 @end
