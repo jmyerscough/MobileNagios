@@ -9,6 +9,7 @@
 #import "NagiosHostTableViewController.h"
 #import "NagiosHost.h"
 #import "NagiosWebServiceReader.h"
+#import "SettingsViewController.h"  // the nagios address key is declared here
 
 @interface NagiosHostTableViewController ()
 
@@ -38,10 +39,24 @@
 
 - (IBAction)refreshButtonClicked:(id)sender
 {
-    // retrieve the data from the web server.
-    NagiosWebServiceReader *nagiosService = [[NagiosWebServiceReader alloc] initWithURL:
-                                             [[NSURL alloc] initWithString:@"http://192.168.44.130/status/"]];
-    self.hostCollection =  [nagiosService retrieveNagiosStatusAndBlock];   
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if ([defaults objectForKey:NAGIOS_ADDRESS_KEY])
+    {
+        // retrieve the data from the web server.
+        NagiosWebServiceReader *nagiosService = [[NagiosWebServiceReader alloc] initWithURL:
+                                                 [[NSURL alloc] initWithString:[defaults objectForKey:NAGIOS_ADDRESS_KEY]]];
+        self.hostCollection =  [nagiosService retrieveNagiosStatusAndBlock];
+    }
+    else
+    {
+        UIAlertView *errorMessage = [[UIAlertView alloc] initWithTitle:@"No valid server address"
+                                                               message:@"Please check the application settings and enter the webserver's URL" 
+                                                              delegate:nil
+                                                     cancelButtonTitle:@"OK"
+                                                     otherButtonTitles:nil];
+        [errorMessage show];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -72,19 +87,6 @@
     cell.detailTextLabel.text = host.pluginOutput;
     
     return cell;
-}
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
 }
 
 @end
